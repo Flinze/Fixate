@@ -44,7 +44,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
         currTask = getIntent().getIntExtra("currTask", 0);
         //
-        createTimeCountDown(12);
+        createTimeCountDown(25*60);
     }
 
     //TODO: MAKE IT SO THE ANDROID BACK BUTTON DOESNT WORK CANT GO BACK TO LAST ACTIVITIY
@@ -123,6 +123,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
         switch (view.getId()) {
 
             case R.id.cancelButton:
+                isOnBreak = true;
                 Intent i = new Intent(Task.this, MainActivity.class);
                 startActivity(i);
                 break;

@@ -8,12 +8,15 @@
 
     <ImageButton
         android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="52dp"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        android:background="#fffafafa"
+        android:contentDescription="Cancel Button"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/cancel1" />
 
     <TextView
         android:id="@+id/countdownText"
@@ -21,13 +24,19 @@
         android:layout_height="43dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="113dp" />
+        android:layout_marginTop="113dp"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="35sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/warningTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="" />
+        android:text=""
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="25sp" />
 
 </RelativeLayout>

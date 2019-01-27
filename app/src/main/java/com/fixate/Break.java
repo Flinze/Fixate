@@ -9,5 +9,12 @@ public class Break extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_break);
+
+        Bundle extras = getIntent().getExtras();
+        int currTask = extras.getInt("currTask");
+
+        currTask++;
+
+        
     }
 }

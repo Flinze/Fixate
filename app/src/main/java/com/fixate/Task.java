@@ -25,11 +25,11 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
         pauseButton = findViewById(R.id.pauseButton);
 
         currTask = getIntent().getIntExtra("currTask", 0);
-        createTimeCountDown(25);
+        createTimeCountDown(2);
     }
 
     private void createTimeCountDown(int time) {
-        CountDownTimer timer = new CountDownTimer(time * 60000, 1000) {
+        CountDownTimer timer = new CountDownTimer(time * 1000, 1000) {
             @Override
             public void onTick(long millisRemaining) {
                 long secondsRemaining = millisRemaining / 1000;

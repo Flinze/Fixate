@@ -37,9 +37,9 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
         countDownText = (TextView) findViewById(R.id.countdownText);
         warningTime = (TextView) findViewById(R.id.warningTime);
         ImageButton cancelButton = findViewById(R.id.cancelButton);
-        ImageButton pauseButton = findViewById(R.id.pauseButton);
+        //ImageButton pauseButton = findViewById(R.id.pauseButton);
         cancelButton.setOnClickListener(this);
-        pauseButton.setOnClickListener(this);
+        //pauseButton.setOnClickListener(this);
 
         currTask = getIntent().getIntExtra("currTask", 0);
         //
@@ -125,7 +125,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
                 startActivity(i);
                 break;
 
-            //TODO: pause the sensor countdown
+           /*
             case R.id.pauseButton:
                 if (!isPaused) {
 
@@ -138,7 +138,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
                     isPaused = false;
                     createTimeCountDown(milliRemaining/1000);
 
-                }
+                }*/
 
         }
     }

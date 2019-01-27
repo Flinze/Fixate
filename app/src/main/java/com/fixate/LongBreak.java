@@ -5,18 +5,22 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 
 public class LongBreak extends AppCompatActivity {
 
     private TextView longBreakCountDown;
     private int currTask;
+    private Switch simpleSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_long_break);
         longBreakCountDown = (TextView) findViewById(R.id.longBreakCountDown);
+        simpleSwitch = (Switch) findViewById(R.id.continueSwitch);
         createTimeCountDown(10);
     }
 
@@ -34,6 +38,14 @@ public class LongBreak extends AppCompatActivity {
             @Override
             public void onFinish() {
                 longBreakCountDown.setText("00:00");
+
+                if (simpleSwitch.isChecked()) {
+                    Intent i = new Intent(LongBreak.this, Task.class);
+                    // Resets the current task;
+                    currTask = 0;
+                    i.putExtra("currTask", currTask);
+                    startActivity(i);
+                }
 
                 // TODO: Decide if the user is brought back to main activity or stays on page
 //                Intent i = new Intent(LongBreak.this, MainActivity.class);

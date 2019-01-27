@@ -24,6 +24,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
     private long milliRemaining = 0;
     private boolean isPaused;
     private CountDownTimer timer;
+    private boolean isOnBreak;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
         timer = new CountDownTimer(time * 1000, 1000) {
             @Override
             public void onTick(long millisRemaining) {
+                isOnBreak = false;
                 milliRemaining = millisRemaining;
                 long secondsRemaining = millisRemaining / 1000;
                 long minutes = secondsRemaining / 60;
@@ -64,6 +66,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
             @Override
             public void onFinish() {
+                isOnBreak = true;
 
                 NotificationCompat.Builder mBuilder;
                 if (Build.VERSION.SDK_INT >= 26) {
@@ -101,10 +104,10 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
                     startActivity(i);
                 } else {
-                    Intent i = new Intent(Task.this, Break.class);
-                    i.putExtra("currTask", currTask);
                     Sensey.getInstance().stop();
                     Sensey.getInstance().stopProximityDetection(proximityListener);
+                    Intent i = new Intent(Task.this, Break.class);
+                    i.putExtra("currTask", currTask);
 
                     startActivity(i);
                 }
@@ -131,7 +134,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
 
                 } else {
-                    Sensey.getInstance().startProximityDetection(proximityListener);
+
                     isPaused = false;
                     createTimeCountDown(milliRemaining/1000);
 
@@ -144,23 +147,22 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
         private CountDownTimer t;
         @Override public void onNear() {
             // Near to device
-
             t.cancel();
-
         }
 
         @Override public void onFar() {
             t = new CountDownTimer(10000, 1000) {
                 @Override
                 public void onTick(long millisRemaining) {
-
                     warningTime.setText("" + millisRemaining/1000);
                 }
 
                 @Override
                 public void onFinish() {
-                    Intent i = new Intent(Task.this, Whisper.class);
-                    startActivity(i);
+                    if (!isOnBreak) {
+                        Intent i = new Intent(Task.this, Whisper.class);
+                        startActivity(i);
+                    }
                 }
             }.start();
         }

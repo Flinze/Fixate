@@ -70,10 +70,10 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
                     NotificationChannel channel = new NotificationChannel("channel1", "Channel 1", NotificationManager.IMPORTANCE_DEFAULT);
                     mBuilder = new NotificationCompat.Builder(Task.this, "channel1")
                             .setSmallIcon(R.drawable.ic_launcher_background)
-                            .setContentTitle("My notification")
-                            .setContentText("Much longer text that cannot fit one line...")
+                            .setContentTitle("Break Time")
+                            .setContentText("Your break has started")
                             .setStyle(new NotificationCompat.BigTextStyle()
-                                    .bigText("Much longer text that cannot fit one line..."))
+                                    .bigText("Your break has started"))
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
                     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(Task.this);
@@ -83,10 +83,10 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
                 } else {
                    mBuilder = new NotificationCompat.Builder(Task.this)
                             .setSmallIcon(R.drawable.ic_launcher_background)
-                            .setContentTitle("My notification")
-                            .setContentText("Much longer text that cannot fit one line...")
+                            .setContentTitle("Break Time")
+                            .setContentText("Your break has started")
                             .setStyle(new NotificationCompat.BigTextStyle()
-                                    .bigText("Much longer text that cannot fit one line..."))
+                                    .bigText("Your break has started"))
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT);
                     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(Task.this);
                     notificationManager.notify(123, mBuilder.build());

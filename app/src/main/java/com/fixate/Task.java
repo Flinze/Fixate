@@ -30,7 +30,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
     //TODO: MAKE IT SO THE ANDROID BACK BUTTON DOESNT WORK CANT GO BACK TO LAST ACTIVITIY
     private void createTimeCountDown(int time) {
-        CountDownTimer timer = new CountDownTimer(time * 60000, 1000) {
+        CountDownTimer timer = new CountDownTimer(time * 1000, 1000) {
             @Override
             public void onTick(long millisRemaining) {
                 long secondsRemaining = millisRemaining / 1000;

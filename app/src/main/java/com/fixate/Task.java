@@ -67,7 +67,12 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
         switch (view.getId()) {
 
             case R.id.cancelButton:
-                Intent i = new Intent(Task.class, MainActivity.class);
+                Intent i = new Intent(Task.this, MainActivity.class);
+                startActivity(i);
+                break;
 
+            case R.id.pauseButton:
+
+        }
     }
 }

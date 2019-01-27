@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -23,9 +24,9 @@ import okhttp3.Response;
 public class Whisper extends AppCompatActivity {
 
     private String token = null;
-    private String url = "https://fixate.herokuapp.com/api/v1/whisper/";
+    private String url = "https://fixate.herokuapp.com/api/v2/whisper/";
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-
+    private TextView incompleteLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

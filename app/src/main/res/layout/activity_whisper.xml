@@ -24,7 +24,7 @@
         android:layout_height="105dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="168dp"
+        android:layout_marginTop="183dp"
         android:ems="10"
         android:inputType="textMultiLine"
         tools:layout_editor_absoluteX="72dp"
@@ -37,5 +37,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="128dp"
-        android:text="Incomplete task, enter a secret ;)" />
+        android:text="Incomplete task, enter a secret ;)"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 </RelativeLayout>

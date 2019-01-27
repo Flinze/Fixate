@@ -67,5 +67,13 @@
         android:layout_marginBottom="107dp"
         android:text="Auto continue after timer" />
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="138dp"
+        android:layout_height="272dp"
+        android:layout_below="@+id/longBreakCountDown"
+        android:layout_toStartOf="@+id/continueSwitch"
+        app:srcCompat="@drawable/congrats2" />
+
 
 </RelativeLayout>

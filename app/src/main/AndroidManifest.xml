@@ -25,6 +25,7 @@
         <activity android:name=".LongBreak" />
         <activity android:name=".Task" />
         <activity android:name=".Whisper" />
+        <activity android:name=".Splash"></activity>
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"></activity>

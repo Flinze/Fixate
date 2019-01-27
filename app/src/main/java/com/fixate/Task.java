@@ -1,7 +1,12 @@
 package com.fixate;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.CountDownTimer;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -37,11 +42,12 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
         currTask = getIntent().getIntExtra("currTask", 0);
         //
-        createTimeCountDown(1210);
+        createTimeCountDown(5);
     }
 
     //TODO: MAKE IT SO THE ANDROID BACK BUTTON DOESNT WORK CANT GO BACK TO LAST ACTIVITIY
     private void createTimeCountDown(long time) {
+
         timer = new CountDownTimer(time * 1000, 1000) {
             @Override
             public void onTick(long millisRemaining) {
@@ -58,6 +64,32 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
             @Override
             public void onFinish() {
+
+                NotificationCompat.Builder mBuilder;
+                if (Build.VERSION.SDK_INT >= 26) {
+                    NotificationChannel channel = new NotificationChannel("123", "123", NotificationManager.IMPORTANCE_DEFAULT);
+                    mBuilder = new NotificationCompat.Builder(Task.this, "123")
+                            .setSmallIcon(R.drawable.ic_launcher_background)
+                            .setContentTitle("My notification")
+                            .setContentText("Much longer text that cannot fit one line...")
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText("Much longer text that cannot fit one line..."))
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(Task.this);
+                    notificationManager.notify(123, mBuilder.build());
+                } else {
+                   mBuilder = new NotificationCompat.Builder(Task.this)
+                            .setSmallIcon(R.drawable.ic_launcher_background)
+                            .setContentTitle("My notification")
+                            .setContentText("Much longer text that cannot fit one line...")
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText("Much longer text that cannot fit one line..."))
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(Task.this);
+                    notificationManager.notify(123, mBuilder.build());
+                }
+
+
                 countDownText.setText("00:00");
                 if (currTask == 3) {
                     Intent i = new Intent(Task.this, LongBreak.class);
@@ -87,13 +119,19 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
                 startActivity(i);
                 break;
 
+            //TODO: pause the sensor countdown
             case R.id.pauseButton:
                 if (!isPaused) {
+
                     timer.cancel();
                     isPaused = true;
+
+
                 } else {
+                    Sensey.getInstance().startProximityDetection(proximityListener);
                     isPaused = false;
                     createTimeCountDown(milliRemaining/1000);
+
                 }
 
         }
@@ -109,7 +147,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
         }
 
         @Override public void onFar() {
-            t = new CountDownTimer(5000, 1000) {
+            t = new CountDownTimer(10000, 1000) {
                 @Override
                 public void onTick(long millisRemaining) {
 

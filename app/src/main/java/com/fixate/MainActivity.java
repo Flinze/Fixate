@@ -17,8 +17,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View v) {
         Intent intent = new Intent(MainActivity.this, Task.class);
-        int taskNum = 0;
-        intent.putExtra("taskNum", taskNum);
+        int currTask = 0;
+        intent.putExtra("currTask", currTask);
         startActivity(intent);
     }
 }

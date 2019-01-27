@@ -34,8 +34,11 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
             public void onTick(long millisRemaining) {
                 long secondsRemaining = millisRemaining / 1000;
                 long minutes = secondsRemaining / 60;
+                if (minutes <= 23) {
+                    View b = findViewById(R.id.cancelButton);
+                    b.setVisibility(View.GONE);
+                }
                 long seconds = secondsRemaining % 60;
-                currMinutes = minutes;
                 countDownText.setText(String.format("%02d:%02d", minutes, seconds));
             }
 
@@ -52,13 +55,6 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
                 }
             }
         }.start();
-    }
-
-    private void cancelButton() {
-        if (currMinutes <= 23) {
-            View b = findViewById(R.id.cancelButton);
-            b.setVisibility(View.GONE);
-        }
     }
 
 

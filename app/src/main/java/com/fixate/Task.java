@@ -105,7 +105,6 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
             // Near to device
 
             t.cancel();
-            System.out.println("THIS IS CLOSE@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
         }
 
@@ -123,7 +122,6 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
                     startActivity(i);
                 }
             }.start();
-            System.out.println("THIS IS FAR@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         }
     };
 }

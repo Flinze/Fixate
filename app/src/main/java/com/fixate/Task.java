@@ -33,11 +33,16 @@ public class Task extends AppCompatActivity {
             @Override
             public void onFinish() {
                 countDownText.setText("00:00");
-                Intent i = new Intent(Task.this, Break.class);
-                i.putExtra("currIntent", currTask);
-                startActivity(i);
+                if (currTask == 3) {
+                    Intent i = new Intent(Task.this, LongBreak.class);
+                    startActivity(i);
+                } else {
+                    Intent i = new Intent(Task.this, Break.class);
+                    i.putExtra("currTask", currTask);
+                    startActivity(i);
+                }
             }
-        };
+        }.start();
     }
 
 }

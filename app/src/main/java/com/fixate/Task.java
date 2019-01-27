@@ -44,7 +44,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
         currTask = getIntent().getIntExtra("currTask", 0);
         //
-        createTimeCountDown(25*60);
+        createTimeCountDown(5);
     }
 
     //TODO: MAKE IT SO THE ANDROID BACK BUTTON DOESNT WORK CANT GO BACK TO LAST ACTIVITIY

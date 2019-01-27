@@ -28,7 +28,7 @@ public class Login extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-    private String postUrl = "https://fixate.herokuapp.com/api/user/login/";
+    private String postUrl = "https://fixate.herokuapp.com/api/v1/user/login/";
     private String token = null;
 
     @Override
@@ -46,24 +46,24 @@ public class Login extends AppCompatActivity {
         String password = passwordEditText.getText().toString();
 
         SharedPreferences mPrefs = this.getSharedPreferences("token", MODE_PRIVATE); //add key
-        token = mPrefs.getString("token","");
+        token = mPrefs.getString("token", "");
 
-            String postJson =
-                    "{\"email\":\"" + email + "\","
-                            + "\"password\":\"" + password + "\"}";
-            try {
-                postRequest(postUrl, postJson);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        if (token != null) {
-            loginVerified();
-        } else {
-            // TODO: response takes longer to come back, may display invalid even if valid
-            Toast.makeText(this, "Invalid login",
-                    Toast.LENGTH_LONG).show();
+        String postJson =
+                "{\"email\":\"" + email + "\","
+                        + "\"password\":\"" + password + "\"}";
+        try {
+            postRequest(postUrl, postJson);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+//        if (token != null) {
+//            loginVerified();
+//        } else {
+            // TODO: response takes longer to come back, may display invalid even if valid
+//            Toast.makeText(this, "Invalid login",
+//                    Toast.LENGTH_LONG).show();
+//        }
 
     }
 
@@ -82,19 +82,20 @@ public class Login extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 call.cancel();
+                Toast.makeText(getApplicationContext(), "Invalid login", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 //                Log.d("TAG",response.body().string());
                 String jsonData = response.body().string();
-            try {
-                JSONObject jObject = new JSONObject(jsonData);
-                token = jObject.getString("token");
+                try {
+                    JSONObject jObject = new JSONObject(jsonData);
+                    token = jObject.getString("token");
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 System.out.println(token);
                 SharedPreferences preferences = getSharedPreferences("token", MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();

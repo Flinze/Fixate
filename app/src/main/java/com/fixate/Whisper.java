@@ -17,7 +17,7 @@ public class Whisper extends AppCompatActivity {
     public void onSubmit(View v) {
         // Do something with the user input
         EditText userInput = (EditText) findViewById(R.id.whisperInput);
-        
+
         Intent i = new Intent(Whisper.this, MainActivity.class);
         startActivity(i);
     }

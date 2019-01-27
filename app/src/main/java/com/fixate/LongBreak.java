@@ -117,10 +117,6 @@ public class LongBreak extends AppCompatActivity {
     }
 
     private String getRequest(String requestURL) throws IOException {
-
-//        String bodyJson = "{\"access_token\":\"" + token + "\"}";
-//        RequestBody body = RequestBody.create(JSON, bodyJson);
-
         Request request = new Request.Builder()
                 .url(requestURL)
                 .build();

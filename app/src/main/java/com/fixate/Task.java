@@ -1,7 +1,12 @@
 package com.fixate;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.CountDownTimer;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,11 +18,10 @@ import com.github.nisrulz.sensey.Sensey;
 
 public class Task extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView countDownText = null;
+    private TextView countDownText;
+    private TextView warningTime;
     private int currTask;
     private long milliRemaining = 0;
-    private ImageButton cancelButton;
-    private ImageButton pauseButton;
     private boolean isPaused;
     private CountDownTimer timer;
 
@@ -30,18 +34,20 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
         Sensey.getInstance().startProximityDetection(proximityListener);
 
         countDownText = (TextView) findViewById(R.id.countdownText);
-        cancelButton = findViewById(R.id.cancelButton);
-        pauseButton = findViewById(R.id.pauseButton);
+        warningTime = (TextView) findViewById(R.id.warningTime);
+        ImageButton cancelButton = findViewById(R.id.cancelButton);
+        ImageButton pauseButton = findViewById(R.id.pauseButton);
         cancelButton.setOnClickListener(this);
         pauseButton.setOnClickListener(this);
 
         currTask = getIntent().getIntExtra("currTask", 0);
         //
-        createTimeCountDown(1210);
+        createTimeCountDown(5);
     }
 
     //TODO: MAKE IT SO THE ANDROID BACK BUTTON DOESNT WORK CANT GO BACK TO LAST ACTIVITIY
     private void createTimeCountDown(long time) {
+
         timer = new CountDownTimer(time * 1000, 1000) {
             @Override
             public void onTick(long millisRemaining) {
@@ -58,6 +64,35 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
             @Override
             public void onFinish() {
+
+                NotificationCompat.Builder mBuilder;
+                if (Build.VERSION.SDK_INT >= 26) {
+                    NotificationChannel channel = new NotificationChannel("channel1", "Channel 1", NotificationManager.IMPORTANCE_DEFAULT);
+                    mBuilder = new NotificationCompat.Builder(Task.this, "channel1")
+                            .setSmallIcon(R.drawable.ic_launcher_background)
+                            .setContentTitle("Break Time")
+                            .setContentText("Your break has started")
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText("Your break has started"))
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(Task.this);
+                    NotificationManager notifManager = getSystemService(NotificationManager.class);
+                    notifManager.createNotificationChannel(channel);
+                    notificationManager.notify(123, mBuilder.build());
+                } else {
+                   mBuilder = new NotificationCompat.Builder(Task.this)
+                            .setSmallIcon(R.drawable.ic_launcher_background)
+                            .setContentTitle("Break Time")
+                            .setContentText("Your break has started")
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText("Your break has started"))
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(Task.this);
+                    notificationManager.notify(123, mBuilder.build());
+                }
+
+
                 countDownText.setText("00:00");
                 if (currTask == 3) {
                     Intent i = new Intent(Task.this, LongBreak.class);
@@ -87,27 +122,47 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
                 startActivity(i);
                 break;
 
+            //TODO: pause the sensor countdown
             case R.id.pauseButton:
                 if (!isPaused) {
+
                     timer.cancel();
                     isPaused = true;
+
+
                 } else {
+                    Sensey.getInstance().startProximityDetection(proximityListener);
                     isPaused = false;
                     createTimeCountDown(milliRemaining/1000);
+
                 }
 
         }
     }
 
     ProximityDetector.ProximityListener proximityListener = new ProximityDetector.ProximityListener() {
+        private CountDownTimer t;
         @Override public void onNear() {
             // Near to device
-            System.out.println("THIS IS CLOSE@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+            t.cancel();
+
         }
 
         @Override public void onFar() {
-            // Far from device
-            System.out.println("THIS IS FAR@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            t = new CountDownTimer(10000, 1000) {
+                @Override
+                public void onTick(long millisRemaining) {
+
+                    warningTime.setText("" + millisRemaining/1000);
+                }
+
+                @Override
+                public void onFinish() {
+                    Intent i = new Intent(Task.this, Whisper.class);
+                    startActivity(i);
+                }
+            }.start();
         }
     };
 }

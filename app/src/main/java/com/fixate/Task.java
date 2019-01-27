@@ -24,6 +24,9 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
         cancelButton = findViewById(R.id.cancelButton);
         pauseButton = findViewById(R.id.pauseButton);
 
+        cancelButton.setOnClickListener(this);
+        pauseButton.setOnClickListener(this);
+
         currTask = getIntent().getIntExtra("currTask", 0);
         createTimeCountDown(1210);
     }

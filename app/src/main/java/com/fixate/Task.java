@@ -13,11 +13,10 @@ import com.github.nisrulz.sensey.Sensey;
 
 public class Task extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView countDownText = null;
+    private TextView countDownText;
+    private TextView warningTime;
     private int currTask;
     private long milliRemaining = 0;
-    private ImageButton cancelButton;
-    private ImageButton pauseButton;
     private boolean isPaused;
     private CountDownTimer timer;
 
@@ -30,8 +29,9 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
         Sensey.getInstance().startProximityDetection(proximityListener);
 
         countDownText = (TextView) findViewById(R.id.countdownText);
-        cancelButton = findViewById(R.id.cancelButton);
-        pauseButton = findViewById(R.id.pauseButton);
+        warningTime = (TextView) findViewById(R.id.warningTime);
+        ImageButton cancelButton = findViewById(R.id.cancelButton);
+        ImageButton pauseButton = findViewById(R.id.pauseButton);
         cancelButton.setOnClickListener(this);
         pauseButton.setOnClickListener(this);
 
@@ -100,13 +100,29 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
     }
 
     ProximityDetector.ProximityListener proximityListener = new ProximityDetector.ProximityListener() {
+        private CountDownTimer t;
         @Override public void onNear() {
             // Near to device
+
+            t.cancel();
             System.out.println("THIS IS CLOSE@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
         }
 
         @Override public void onFar() {
-            // Far from device
+            t = new CountDownTimer(5000, 1000) {
+                @Override
+                public void onTick(long millisRemaining) {
+
+                    warningTime.setText("" + millisRemaining/1000);
+                }
+
+                @Override
+                public void onFinish() {
+                    Intent i = new Intent(Task.this, Whisper.class);
+                    startActivity(i);
+                }
+            }.start();
             System.out.println("THIS IS FAR@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         }
     };

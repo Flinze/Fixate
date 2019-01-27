@@ -15,7 +15,8 @@
         android:layout_marginBottom="230dp"
         android:text="@string/submitMsg"
         tools:layout_editor_absoluteX="136dp"
-        tools:layout_editor_absoluteY="231dp" />
+        tools:layout_editor_absoluteY="231dp"
+        android:onClick="onSubmit" />
 
     <EditText
         android:id="@+id/whisperInput"

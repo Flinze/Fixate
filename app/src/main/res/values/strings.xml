@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Fixate</string>
     <string name="start">Start</string>
+    <string name="submitMsg">Submit</string>
 </resources>

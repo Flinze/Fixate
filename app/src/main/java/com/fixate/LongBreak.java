@@ -9,11 +9,23 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class LongBreak extends AppCompatActivity {
 
     private TextView longBreakCountDown;
     private int currTask;
     private Switch simpleSwitch;
+    private OkHttpClient client = new OkHttpClient();
+    private String url = "https://fixate.herokuapp.com/api/v1/whisper/";
+    private String content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +34,21 @@ public class LongBreak extends AppCompatActivity {
         longBreakCountDown = (TextView) findViewById(R.id.longBreakCountDown);
         simpleSwitch = (Switch) findViewById(R.id.continueSwitch);
         createTimeCountDown(10);
+
+        String jsonRequestData;
+        try {
+            jsonRequestData = getRequest(url);
+            try {
+                JSONObject jObject = new JSONObject(jsonRequestData);
+                content = jObject.getString("content");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     protected void createTimeCountDown(int time) {
@@ -66,4 +93,14 @@ public class LongBreak extends AppCompatActivity {
         Intent i = new Intent(LongBreak.this, MainActivity.class);
         startActivity(i);
     }
+
+    private String getRequest(String requestURL) throws IOException {
+        Request request = new Request.Builder()
+                .url(requestURL)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        return response.body().string();
+    }
+
 }

@@ -17,14 +17,17 @@ public class Task extends AppCompatActivity {
         setContentView(R.layout.activity_task);
         countDownText = (TextView) findViewById(R.id.countdownText);
         currTask = getIntent().getIntExtra("currTask", 0);
-        createTimeCountDown(1);
+        createTimeCountDown(25);
     }
 
     protected void createTimeCountDown(int time) {
         CountDownTimer timer = new CountDownTimer(time * 60000, 1000) {
             @Override
-            public void onTick(long timeRemaining) {
-                countDownText.setText("" + timeRemaining / 60000);
+            public void onTick(long millisRemaining) {
+                long secondsRemaining = millisRemaining / 1000;
+                long minutes = secondsRemaining / 60;
+                long seconds = secondsRemaining % 60;
+                countDownText.setText(String.format("%02d:%02d", minutes, seconds));
             }
 
             @Override

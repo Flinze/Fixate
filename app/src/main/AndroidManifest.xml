@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -25,10 +26,13 @@
         <activity android:name=".LongBreak" />
         <activity android:name=".Task" />
         <activity android:name=".Whisper" />
-        <activity android:name=".Splash"></activity>
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+        <activity android:name=".Splash" />
+        <activity android:name=".Login">
+            <intent-filter >
+                <action android:name="com.fixate.Login" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

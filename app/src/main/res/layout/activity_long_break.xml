@@ -13,25 +13,32 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="103dp"
-        android:text="Whisper Text Here"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
         tools:layout_editor_absoluteX="151dp"
         tools:layout_editor_absoluteY="164dp" />
 
     <TextView
         android:id="@+id/longBreakCountDown"
         android:layout_width="189dp"
-        android:layout_height="43dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="182dp" />
+        android:layout_marginTop="182dp"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="45sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/continueButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Continue"
-        android:onClick="onClickContinue"/>
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="217dp"
+        android:onClick="onClickContinue"
+        android:text="Continue" />
 
     <Button
         android:id="@+id/endButton"

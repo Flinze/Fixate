@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,7 +25,7 @@ import okhttp3.Response;
 public class Whisper extends AppCompatActivity {
 
     private String token = null;
-    private String url = "https://fixate.herokuapp.com/api/v2/whisper/";
+    private String url = "https://fixate.herokuapp.com/api/v1/whisper/";
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private TextView incompleteLabel;
 
@@ -38,11 +39,11 @@ public class Whisper extends AppCompatActivity {
         // Do something with the user input
         EditText userInputEditText = (EditText) findViewById(R.id.whisperInput);
 
-        String userInput = userInputEditText.getText().toString();
-        String userJson = jsonString(userInput);
-
         SharedPreferences mPrefs = this.getSharedPreferences("token", MODE_PRIVATE);
         token = mPrefs.getString("token","");
+
+        String userInput = userInputEditText.getText().toString();
+        String userJson = jsonString(userInput);
 
         try {
             postRequest(url, userJson);
@@ -55,7 +56,8 @@ public class Whisper extends AppCompatActivity {
     }
 
     private String jsonString(String whisper) {
-        return "{\"content\":\"" + whisper + "\"}";
+        return "{\"content\":\"" + whisper + "\","
+                + "\"access_token\":\"" + token + "\"}";
     }
 
     private void postRequest(String postUrl, String postBody) throws IOException {
@@ -63,7 +65,6 @@ public class Whisper extends AppCompatActivity {
         RequestBody body = RequestBody.create(JSON, postBody);
         Request request = new Request.Builder()
                 .url(postUrl)
-                .addHeader("token", token)
                 .post(body)
                 .build();
 
@@ -81,10 +82,10 @@ public class Whisper extends AppCompatActivity {
                     JSONObject jObject = new JSONObject(jsonData);
                     String content;
                     content = jObject.getString("content");
-                    System.out.print("token");
+                    System.out.print(content);
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e("tst", "exception", e);
                 }
 
 

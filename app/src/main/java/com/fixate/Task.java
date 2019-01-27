@@ -25,6 +25,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
     private boolean isPaused;
     private CountDownTimer timer;
     private boolean isOnBreak;
+    private boolean isWhisper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,50 +67,51 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
             @Override
             public void onFinish() {
-                isOnBreak = true;
+                if (!isWhisper) {
+                    isOnBreak = true;
+                    NotificationCompat.Builder mBuilder;
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        NotificationChannel channel = new NotificationChannel("channel1", "Channel 1", NotificationManager.IMPORTANCE_DEFAULT);
+                        mBuilder = new NotificationCompat.Builder(Task.this, "channel1")
+                                .setSmallIcon(R.drawable.ic_launcher_background)
+                                .setContentTitle("Break Time")
+                                .setContentText("Your break has started")
+                                .setStyle(new NotificationCompat.BigTextStyle()
+                                        .bigText("Your break has started"))
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-                NotificationCompat.Builder mBuilder;
-                if (Build.VERSION.SDK_INT >= 26) {
-                    NotificationChannel channel = new NotificationChannel("channel1", "Channel 1", NotificationManager.IMPORTANCE_DEFAULT);
-                    mBuilder = new NotificationCompat.Builder(Task.this, "channel1")
-                            .setSmallIcon(R.drawable.ic_launcher_background)
-                            .setContentTitle("Break Time")
-                            .setContentText("Your break has started")
-                            .setStyle(new NotificationCompat.BigTextStyle()
-                                    .bigText("Your break has started"))
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(Task.this);
-                    NotificationManager notifManager = getSystemService(NotificationManager.class);
-                    notifManager.createNotificationChannel(channel);
-                    notificationManager.notify(123, mBuilder.build());
-                } else {
-                   mBuilder = new NotificationCompat.Builder(Task.this)
-                            .setSmallIcon(R.drawable.ic_launcher_background)
-                            .setContentTitle("Break Time")
-                            .setContentText("Your break has started")
-                            .setStyle(new NotificationCompat.BigTextStyle()
-                                    .bigText("Your break has started"))
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(Task.this);
-                    notificationManager.notify(123, mBuilder.build());
-                }
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(Task.this);
+                        NotificationManager notifManager = getSystemService(NotificationManager.class);
+                        notifManager.createNotificationChannel(channel);
+                        notificationManager.notify(123, mBuilder.build());
+                    } else {
+                        mBuilder = new NotificationCompat.Builder(Task.this)
+                                .setSmallIcon(R.drawable.ic_launcher_background)
+                                .setContentTitle("Break Time")
+                                .setContentText("Your break has started")
+                                .setStyle(new NotificationCompat.BigTextStyle()
+                                        .bigText("Your break has started"))
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(Task.this);
+                        notificationManager.notify(123, mBuilder.build());
+                    }
 
 
-                countDownText.setText("00:00");
-                if (currTask == 3) {
-                    Intent i = new Intent(Task.this, LongBreak.class);
-                    Sensey.getInstance().stop();
-                    Sensey.getInstance().stopProximityDetection(proximityListener);
+                    countDownText.setText("00:00");
+                    if (currTask == 3) {
+                        Intent i = new Intent(Task.this, LongBreak.class);
+                        Sensey.getInstance().stop();
+                        Sensey.getInstance().stopProximityDetection(proximityListener);
 
-                    startActivity(i);
-                } else {
-                    Sensey.getInstance().stop();
-                    Sensey.getInstance().stopProximityDetection(proximityListener);
-                    Intent i = new Intent(Task.this, Break.class);
-                    i.putExtra("currTask", currTask);
+                        startActivity(i);
+                    } else {
+                        Sensey.getInstance().stop();
+                        Sensey.getInstance().stopProximityDetection(proximityListener);
+                        Intent i = new Intent(Task.this, Break.class);
+                        i.putExtra("currTask", currTask);
 
-                    startActivity(i);
+                        startActivity(i);
+                    }
                 }
             }
         }.start();
@@ -160,6 +162,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
                 @Override
                 public void onFinish() {
                     if (!isOnBreak) {
+                        isWhisper = true;
                         Intent i = new Intent(Task.this, Whisper.class);
                         startActivity(i);
                     }

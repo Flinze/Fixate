@@ -17,7 +17,7 @@ public class Break extends AppCompatActivity {
         setContentView(R.layout.activity_break);
         breakCountDown = (TextView) findViewById(R.id.breakCountDown);
         currTask = getIntent().getIntExtra("currTask", 0);
-        createTimeCountDown(10000);
+        createTimeCountDown(300);
 
     }
 

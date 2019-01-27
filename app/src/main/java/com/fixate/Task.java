@@ -12,9 +12,11 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
     private TextView countDownText = null;
     private int currTask;
-    private long currMinutes = 0;
+    private long milliRemaining = 0;
     private ImageButton cancelButton;
     private ImageButton pauseButton;
+    private boolean isPaused;
+    private CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +30,16 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
         pauseButton.setOnClickListener(this);
 
         currTask = getIntent().getIntExtra("currTask", 0);
+        //
         createTimeCountDown(1210);
     }
 
     //TODO: MAKE IT SO THE ANDROID BACK BUTTON DOESNT WORK CANT GO BACK TO LAST ACTIVITIY
-    private void createTimeCountDown(int time) {
-        CountDownTimer timer = new CountDownTimer(time * 1000, 1000) {
+    private void createTimeCountDown(long time) {
+        timer = new CountDownTimer(time * 1000, 1000) {
             @Override
             public void onTick(long millisRemaining) {
+                milliRemaining = millisRemaining;
                 long secondsRemaining = millisRemaining / 1000;
                 long minutes = secondsRemaining / 60;
                 if (minutes < 20) {
@@ -72,6 +76,13 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
                 break;
 
             case R.id.pauseButton:
+                if (!isPaused) {
+                    timer.cancel();
+                    isPaused = true;
+                } else {
+                    isPaused = false;
+                    createTimeCountDown(milliRemaining/1000);
+                }
 
         }
     }

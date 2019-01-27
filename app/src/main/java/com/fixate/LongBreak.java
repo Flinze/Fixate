@@ -24,8 +24,9 @@ public class LongBreak extends AppCompatActivity {
     private int currTask;
     private Switch simpleSwitch;
     private OkHttpClient client = new OkHttpClient();
-    private String url = "https://fixate.herokuapp.com/api/v1/whisper/";
+    private String url = "https://fixate.herokuapp.com/api/v2/whisper/";
     private String content;
+    private TextView textViewLongBreak;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +36,14 @@ public class LongBreak extends AppCompatActivity {
         simpleSwitch = (Switch) findViewById(R.id.continueSwitch);
         createTimeCountDown(10);
 
+        textViewLongBreak = findViewById(R.id.textViewLongBreak);
+
         String jsonRequestData;
         try {
             jsonRequestData = getRequest(url);
             try {
                 JSONObject jObject = new JSONObject(jsonRequestData);
-                content = jObject.getString("content");
+                content = jObject.getJSONObject("whisper").getString("content");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -48,7 +51,7 @@ public class LongBreak extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
+        textViewLongBreak.setText(content);
     }
 
     protected void createTimeCountDown(int time) {

@@ -23,7 +23,7 @@ import okhttp3.Response;
 public class Whisper extends AppCompatActivity {
 
     private String token = null;
-    private String url = "https://fixate.herokuapp.com/api/v1/whisper/";
+    private String url = "https://fixate.herokuapp.com/api/v2/whisper/";
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
 

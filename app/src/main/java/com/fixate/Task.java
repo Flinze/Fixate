@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.github.nisrulz.sensey.ProximityDetector;
+import com.github.nisrulz.sensey.Sensey;
+
 public class Task extends AppCompatActivity implements View.OnClickListener {
 
     private TextView countDownText = null;
@@ -20,10 +23,13 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
+
+        Sensey.getInstance().init(this);
+        Sensey.getInstance().startProximityDetection(proximityListener);
+
         countDownText = (TextView) findViewById(R.id.countdownText);
         cancelButton = findViewById(R.id.cancelButton);
         pauseButton = findViewById(R.id.pauseButton);
-
         cancelButton.setOnClickListener(this);
         pauseButton.setOnClickListener(this);
 
@@ -51,10 +57,16 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
                 countDownText.setText("00:00");
                 if (currTask == 3) {
                     Intent i = new Intent(Task.this, LongBreak.class);
+                    Sensey.getInstance().stop();
+                    Sensey.getInstance().stopProximityDetection(proximityListener);
+
                     startActivity(i);
                 } else {
                     Intent i = new Intent(Task.this, Break.class);
                     i.putExtra("currTask", currTask);
+                    Sensey.getInstance().stop();
+                    Sensey.getInstance().stopProximityDetection(proximityListener);
+
                     startActivity(i);
                 }
             }
@@ -75,4 +87,16 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
         }
     }
+
+    ProximityDetector.ProximityListener proximityListener = new ProximityDetector.ProximityListener() {
+        @Override public void onNear() {
+            // Near to device
+            System.out.println("THIS IS CLOSE@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        }
+
+        @Override public void onFar() {
+            // Far from device
+            System.out.println("THIS IS FAR@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        }
+    };
 }

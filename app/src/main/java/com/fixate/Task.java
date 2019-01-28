@@ -44,7 +44,7 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
         currTask = getIntent().getIntExtra("currTask", 0);
         //
-        createTimeCountDown(1500);
+        createTimeCountDown(6);
     }
 
     //TODO: MAKE IT SO THE ANDROID BACK BUTTON DOESNT WORK CANT GO BACK TO LAST ACTIVITIY
@@ -99,12 +99,14 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
 
                     countDownText.setText("00:00");
                     if (currTask == 3) {
+                        isOnBreak = true;
                         Intent i = new Intent(Task.this, LongBreak.class);
                         Sensey.getInstance().stop();
                         Sensey.getInstance().stopProximityDetection(proximityListener);
 
                         startActivity(i);
                     } else {
+                        isOnBreak = true;
                         Sensey.getInstance().stop();
                         Sensey.getInstance().stopProximityDetection(proximityListener);
                         Intent i = new Intent(Task.this, Break.class);
@@ -150,11 +152,13 @@ public class Task extends AppCompatActivity implements View.OnClickListener {
         private CountDownTimer t;
         @Override public void onNear() {
             // Near to device
-            t.cancel();
+            if (t != null) {
+                t.cancel();
+            }
         }
 
         @Override public void onFar() {
-            t = new CountDownTimer(10000, 1000) {
+            t = new CountDownTimer(5000, 1000) {
                 @Override
                 public void onTick(long millisRemaining) {
                     warningTime.setText("" + millisRemaining/1000);

@@ -47,7 +47,7 @@ public class LongBreak extends AppCompatActivity {
 
         longBreakCountDown = (TextView) findViewById(R.id.longBreakCountDown);
         simpleSwitch = (Switch) findViewById(R.id.continueSwitch);
-        createTimeCountDown(900);
+        createTimeCountDown(30);
 
         textViewLongBreak = findViewById(R.id.textViewLongBreak);
 
